@@ -1,0 +1,476 @@
+query CategoryGoodsDetailListPCConnectionPaginationQuery(
+  $after: String = null
+  $first: Int = null
+  $nid: Int!
+  $sort: GoodsSortKind = POPULAR_DESC
+) {
+  ...CategoryGoodsDetailListPCFragment_30Z7Da
+}
+
+fragment BundlePurchaseMobileFragment on Goods {
+  name
+  nid
+  images {
+    listingUrl
+  }
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  price {
+    pricePerQuantity {
+      quantity
+      price
+    }
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      quantity
+      activated
+    }
+  }
+  deliveryFee {
+    __typename
+    ... on FreeDeliveryFee {
+      __typename
+      id
+    }
+    ... on ConditionalDeliveryFee {
+      __typename
+      condition
+      id
+    }
+    ... on ArrivalDeliveryFee {
+      id
+    }
+    ... on ChunkDeliveryFee {
+      id
+    }
+    ... on PaidDeliveryFee {
+      id
+    }
+    ... on QuantityDeliveryFee {
+      id
+    }
+    ... on WeightVolumeDeliveryFee {
+      id
+    }
+  }
+  categoryNode {
+    path
+    id
+  }
+}
+
+fragment BundlePurchasePCFragment on Goods {
+  name
+  nid
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+  }
+  deliveryFee {
+    __typename
+    ... on FreeDeliveryFee {
+      __typename
+      id
+    }
+    ... on ConditionalDeliveryFee {
+      __typename
+      condition
+      id
+    }
+    ... on ArrivalDeliveryFee {
+      id
+    }
+    ... on ChunkDeliveryFee {
+      id
+    }
+    ... on PaidDeliveryFee {
+      id
+    }
+    ... on QuantityDeliveryFee {
+      id
+    }
+    ... on WeightVolumeDeliveryFee {
+      id
+    }
+  }
+  price {
+    pricePerQuantity {
+      quantity
+      price
+    }
+  }
+  categoryNode {
+    path
+    id
+  }
+}
+
+fragment CategoryGoodsDetailListPCFragment_30Z7Da on Query {
+  goodsCategory(nid: $nid) {
+    goodsListPC: goodsList(first: $first, after: $after, sort: $sort) {
+      edges {
+        node {
+          id
+          nid
+          name
+          vendor {
+            nid
+            name
+            id
+          }
+          categoryNode {
+            nid
+            path
+            id
+          }
+          price {
+            salePrice
+            originalPrice
+          }
+          goodsQuantity {
+            unitQuantity
+          }
+          ...ItemCardResFragment_3ZwZC2
+          __typename
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+    id
+  }
+}
+
+fragment DeliveryTagResFragment on Delivery {
+  __isDelivery: __typename
+  __typename
+  ... on ParcelDelivery {
+    __typename
+  }
+  ... on DirectDelivery {
+    arrivalTag
+  }
+  ... on AggregateDelivery {
+    arrivalTag
+  }
+}
+
+fragment ItemCardCartControlResFragment on Goods {
+  ...BundlePurchaseMobileFragment
+  ...BundlePurchasePCFragment
+  nid
+  name
+  images {
+    listingUrl
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  price {
+    pricePerQuantity {
+      __typename
+    }
+    salePrice
+  }
+  vendor {
+    name
+    nid
+    delivery {
+      __typename
+    }
+    id
+  }
+  stock {
+    __typename
+    quantity
+  }
+  categoryNode {
+    nid
+    path
+    id
+  }
+  isFreeDelivery
+}
+
+fragment ItemCardImageResFragment on Goods {
+  ...SpecialPriceBadgeResFragment
+  name
+  images {
+    listingUrl
+  }
+}
+
+fragment ItemCardQuantityCartButtonResFragment_3oxpiK on Goods {
+  ...useGoodsCountV2Fragment
+  ...useGoodsNonPurchasableV2Fragment_1LTqib
+  nid
+  name
+  cartCount
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  goodsQuantity {
+    unitQuantity
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+  }
+  price {
+    salePrice
+  }
+  categoryNode {
+    path
+    id
+  }
+  isFreeDelivery
+}
+
+fragment ItemCardResFragment_3ZwZC2 on Goods {
+  ...useGoodsNonPurchasableV2Fragment_BeRX7
+  ...SpecialPriceBadgeResFragment
+  ...ItemCardImageResFragment
+  ...ItemCardCartControlResFragment
+  ...ItemCardQuantityCartButtonResFragment_3oxpiK
+  ...useItemCardBadgeItemsFragment_3ZwZC2
+  id
+  nid
+  name
+  vendor {
+    nid
+    name
+    delivery {
+      ...DeliveryTagResFragment
+      __typename
+      ... on DirectDelivery {
+        arrivalTag
+      }
+      ... on AggregateDelivery {
+        arrivalTag
+      }
+    }
+    id
+  }
+  price {
+    originalPrice
+    salePrice
+    appliedCoupon {
+      price
+    }
+    additionalOrderCoupon {
+      discountInfo {
+        __typename
+        ... on DiscountTypeRate {
+          discountPercentage
+        }
+        ... on DiscountTypePrice {
+          discountPrice
+        }
+      }
+      id
+    }
+    unitPrice {
+      unitLabel
+      price
+    }
+    discountRate
+    pricePerQuantity {
+      __typename
+    }
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  categoryNode {
+    path
+    id
+  }
+  standard
+  unit
+  isFreeDelivery
+}
+
+fragment SpecialPriceBadgeResFragment on Goods {
+  gfoCode
+}
+
+fragment useGoodsCountV2Fragment on Goods {
+  nid
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    maxPerOrderQuantity {
+      activated
+      quantity
+    }
+    maxDayQuantity {
+      activated
+      quantity
+    }
+    maxPerPeriodQuantity {
+      activated
+      period {
+        start
+        end
+      }
+      quantity
+      purchased
+    }
+    unitQuantity
+  }
+  stock {
+    assignedQuantity
+    quantity
+  }
+  todayPurchasedCount
+  id
+}
+
+fragment useGoodsNonPurchasableV2Fragment_1LTqib on Goods {
+  id
+  reason_CARD: nonPurchasableReason {
+    __typename
+    ... on GoodsOutOfStockReason {
+      __typename
+      id
+    }
+    ... on GoodsStockNotEnoughReason {
+      __typename
+      id
+    }
+    ... on GoodsBlockedReason {
+      __typename
+      id
+    }
+    ... on SaleInactiveReason {
+      __typename
+      id
+    }
+    ... on GoodsByMinorsReason {
+      id
+    }
+    ... on GoodsDeliveryFeeNotCalculableReason {
+      id
+    }
+    ... on GoodsNonServiceableAreaReason {
+      id
+    }
+    ... on GoodsQuantityAboveDailyMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAboveMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAbovePeriodMaximumReason {
+      id
+    }
+    ... on GoodsQuantityBelowMinimumReason {
+      id
+    }
+    ... on GoodsQuantityConstraintLimitReason {
+      id
+    }
+    ... on GoodsQuantityNotDivisibleUnitQuantityReason {
+      id
+    }
+  }
+}
+
+fragment useGoodsNonPurchasableV2Fragment_BeRX7 on Goods {
+  id
+  reason_CARD: nonPurchasableReason {
+    __typename
+    ... on GoodsOutOfStockReason {
+      __typename
+      id
+    }
+    ... on GoodsStockNotEnoughReason {
+      __typename
+      id
+    }
+    ... on GoodsBlockedReason {
+      __typename
+      id
+    }
+    ... on SaleInactiveReason {
+      __typename
+      id
+    }
+    ... on GoodsByMinorsReason {
+      id
+    }
+    ... on GoodsDeliveryFeeNotCalculableReason {
+      id
+    }
+    ... on GoodsNonServiceableAreaReason {
+      id
+    }
+    ... on GoodsQuantityAboveDailyMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAboveMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAbovePeriodMaximumReason {
+      id
+    }
+    ... on GoodsQuantityBelowMinimumReason {
+      id
+    }
+    ... on GoodsQuantityConstraintLimitReason {
+      id
+    }
+    ... on GoodsQuantityNotDivisibleUnitQuantityReason {
+      id
+    }
+  }
+}
+
+fragment useItemCardBadgeItemsFragment_3ZwZC2 on Goods {
+  tag(type: CATEGORY) {
+    __typename
+    ... on CategoryGoodsTag {
+      text
+      emphasis
+    }
+    ... on RepurchaseGoodsTag {
+      text
+      emphasis
+    }
+  }
+}

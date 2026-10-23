@@ -1,0 +1,1170 @@
+query allSearchResultQuery(
+  $keyword: String!
+  $isMobile: Boolean!
+  $searchInput: GoodsSearchInput!
+  $areaId: ID
+) {
+  ...SearchResultPCFragment_1gJacW @skip(if: $isMobile)
+  ...SearchHeaderPCFragment_1jgNCV @skip(if: $isMobile)
+  pcGoodsCount: goodsSearch(first: 80, input: $searchInput, areaId: $areaId) @skip(if: $isMobile) {
+    totalCount
+  }
+  ...SearchResultMobileFragment_1gJacW @include(if: $isMobile)
+  ...SearchResultMobileCartFragment_1jgNCV @include(if: $isMobile)
+  mobileGoodsCount: goodsSearch(first: 20, input: $searchInput, areaId: $areaId) @include(if: $isMobile) {
+    totalCount
+  }
+}
+
+fragment BundlePurchaseMobileFragment on Goods {
+  name
+  nid
+  images {
+    listingUrl
+  }
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  price {
+    pricePerQuantity {
+      quantity
+      price
+    }
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      quantity
+      activated
+    }
+  }
+  deliveryFee {
+    __typename
+    ... on FreeDeliveryFee {
+      __typename
+      id
+    }
+    ... on ConditionalDeliveryFee {
+      __typename
+      condition
+      id
+    }
+    ... on ArrivalDeliveryFee {
+      id
+    }
+    ... on ChunkDeliveryFee {
+      id
+    }
+    ... on PaidDeliveryFee {
+      id
+    }
+    ... on QuantityDeliveryFee {
+      id
+    }
+    ... on WeightVolumeDeliveryFee {
+      id
+    }
+  }
+  categoryNode {
+    path
+    id
+  }
+}
+
+fragment BundlePurchasePCFragment on Goods {
+  name
+  nid
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+  }
+  deliveryFee {
+    __typename
+    ... on FreeDeliveryFee {
+      __typename
+      id
+    }
+    ... on ConditionalDeliveryFee {
+      __typename
+      condition
+      id
+    }
+    ... on ArrivalDeliveryFee {
+      id
+    }
+    ... on ChunkDeliveryFee {
+      id
+    }
+    ... on PaidDeliveryFee {
+      id
+    }
+    ... on QuantityDeliveryFee {
+      id
+    }
+    ... on WeightVolumeDeliveryFee {
+      id
+    }
+  }
+  price {
+    pricePerQuantity {
+      quantity
+      price
+    }
+  }
+  categoryNode {
+    path
+    id
+  }
+}
+
+fragment CartCountPCFragment_1jgNCV on Query {
+  user {
+    __typename
+    ... on RegisteredUser {
+      globalCartPC: cart {
+        id
+        totalCount
+      }
+    }
+    ... on GuestUser {
+      globalCartPC: cart(areaId: $areaId) {
+        id
+        totalCount
+      }
+    }
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+}
+
+fragment CartCountV2MobileFragment_1jgNCV on Query {
+  user {
+    __typename
+    ... on RegisteredUser {
+      cart_v2: cart {
+        id
+        totalCount
+      }
+    }
+    ... on GuestUser {
+      cart_v2: cart(areaId: $areaId) {
+        id
+        totalCount
+      }
+    }
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+}
+
+fragment DeliveryIconResFragment on Delivery {
+  __isDelivery: __typename
+  __typename
+  ... on DirectDelivery {
+    __typename
+  }
+  ... on AggregateDelivery {
+    __typename
+  }
+  ... on ParcelDelivery {
+    __typename
+  }
+}
+
+fragment DeliveryTagResFragment on Delivery {
+  __isDelivery: __typename
+  __typename
+  ... on ParcelDelivery {
+    __typename
+  }
+  ... on DirectDelivery {
+    arrivalTag
+  }
+  ... on AggregateDelivery {
+    arrivalTag
+  }
+}
+
+fragment HeaderUserActionsPCFragment_1jgNCV on Query {
+  ...CartCountPCFragment_1jgNCV
+}
+
+fragment ItemCardCartControlResFragment on Goods {
+  ...BundlePurchaseMobileFragment
+  ...BundlePurchasePCFragment
+  nid
+  name
+  images {
+    listingUrl
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  price {
+    pricePerQuantity {
+      __typename
+    }
+    salePrice
+  }
+  vendor {
+    name
+    nid
+    delivery {
+      __typename
+    }
+    id
+  }
+  stock {
+    __typename
+    quantity
+  }
+  categoryNode {
+    nid
+    path
+    id
+  }
+  isFreeDelivery
+}
+
+fragment ItemCardImageResFragment on Goods {
+  ...SpecialPriceBadgeResFragment
+  name
+  images {
+    listingUrl
+  }
+}
+
+fragment ItemCardQuantityCartButtonResFragment_3oxpiK on Goods {
+  ...useGoodsCountV2Fragment
+  ...useGoodsNonPurchasableV2Fragment_1LTqib
+  nid
+  name
+  cartCount
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+    }
+    id
+  }
+  goodsQuantity {
+    unitQuantity
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+  }
+  price {
+    salePrice
+  }
+  categoryNode {
+    path
+    id
+  }
+  isFreeDelivery
+}
+
+fragment ItemCardResFragment_3ZwZC2 on Goods {
+  ...useGoodsNonPurchasableV2Fragment_BeRX7
+  ...SpecialPriceBadgeResFragment
+  ...ItemCardImageResFragment
+  ...ItemCardCartControlResFragment
+  ...ItemCardQuantityCartButtonResFragment_3oxpiK
+  ...useItemCardBadgeItemsFragment_3ZwZC2
+  id
+  nid
+  name
+  vendor {
+    nid
+    name
+    delivery {
+      ...DeliveryTagResFragment
+      __typename
+      ... on DirectDelivery {
+        arrivalTag
+      }
+      ... on AggregateDelivery {
+        arrivalTag
+      }
+    }
+    id
+  }
+  price {
+    originalPrice
+    salePrice
+    appliedCoupon {
+      price
+    }
+    additionalOrderCoupon {
+      discountInfo {
+        __typename
+        ... on DiscountTypeRate {
+          discountPercentage
+        }
+        ... on DiscountTypePrice {
+          discountPrice
+        }
+      }
+      id
+    }
+    unitPrice {
+      unitLabel
+      price
+    }
+    discountRate
+    pricePerQuantity {
+      __typename
+    }
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  categoryNode {
+    path
+    id
+  }
+  standard
+  unit
+  isFreeDelivery
+}
+
+fragment ItemCardResFragment_3zJ5zL on Goods {
+  ...useGoodsNonPurchasableV2Fragment_BeRX7
+  ...SpecialPriceBadgeResFragment
+  ...ItemCardImageResFragment
+  ...ItemCardCartControlResFragment
+  ...ItemCardQuantityCartButtonResFragment_3oxpiK
+  ...useItemCardBadgeItemsFragment_3zJ5zL
+  id
+  nid
+  name
+  vendor {
+    nid
+    name
+    delivery {
+      ...DeliveryTagResFragment
+      __typename
+      ... on DirectDelivery {
+        arrivalTag
+      }
+      ... on AggregateDelivery {
+        arrivalTag
+      }
+    }
+    id
+  }
+  price {
+    originalPrice
+    salePrice
+    appliedCoupon {
+      price
+    }
+    additionalOrderCoupon {
+      discountInfo {
+        __typename
+        ... on DiscountTypeRate {
+          discountPercentage
+        }
+        ... on DiscountTypePrice {
+          discountPrice
+        }
+      }
+      id
+    }
+    unitPrice {
+      unitLabel
+      price
+    }
+    discountRate
+    pricePerQuantity {
+      __typename
+    }
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  categoryNode {
+    path
+    id
+  }
+  standard
+  unit
+  isFreeDelivery
+}
+
+fragment KeywordRecommendGoodsMobileFragment_2Yggon on Query {
+  user {
+    __typename
+    ... on GuestUser {
+      __typename
+    }
+    ...useHasPurchaseHistoryFragment
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+  keywordRecommendGoodsMobile: keywordRecommendGoods(keyword: $keyword, areaId: $areaId) {
+    ...KeywordRecommendGoodsMobileGoodsFragment
+    __typename
+    id
+    name
+    price {
+      salePrice
+    }
+    vendor {
+      id
+      name
+      delivery {
+        __typename
+      }
+    }
+  }
+}
+
+fragment KeywordRecommendGoodsMobileGoodsFragment on Goods {
+  ...ItemCardImageResFragment
+  ...useGoodsPurchasableFragment
+  ...BundlePurchaseMobileFragment
+  id
+  nid
+  name
+  images {
+    listingUrl
+  }
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+      ... on AggregateDelivery {
+        arrivalTag
+      }
+      ... on DirectDelivery {
+        arrivalTag
+      }
+      ... on ParcelDelivery {
+        __typename
+      }
+    }
+    id
+  }
+  categoryNode {
+    path
+    id
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  price {
+    salePrice
+    appliedCoupon {
+      price
+    }
+    pricePerQuantity {
+      __typename
+    }
+  }
+  isFreeDelivery
+}
+
+fragment KeywordRecommendGoodsPCFragment_2Yggon on Query {
+  user {
+    __typename
+    ... on GuestUser {
+      __typename
+    }
+    ...useHasPurchaseHistoryFragment
+    ... on Node {
+      __isNode: __typename
+      id
+    }
+  }
+  keywordRecommendGoodsPC: keywordRecommendGoods(keyword: $keyword, areaId: $areaId) {
+    ...KeywordRecommendGoodsPCGoodsFragment
+    __typename
+    id
+    name
+    price {
+      salePrice
+    }
+    vendor {
+      id
+      name
+      delivery {
+        __typename
+      }
+    }
+  }
+}
+
+fragment KeywordRecommendGoodsPCGoodsFragment on Goods {
+  ...SpecialPriceBadgeResFragment
+  ...useGoodsPurchasableFragment
+  ...BundlePurchasePCFragment
+  nid
+  name
+  images {
+    listingUrl
+  }
+  standard
+  unit
+  vendor {
+    nid
+    name
+    delivery {
+      __typename
+      ... on AggregateDelivery {
+        __typename
+      }
+      ... on DirectDelivery {
+        __typename
+      }
+      ... on ParcelDelivery {
+        __typename
+      }
+      ...DeliveryTagResFragment
+    }
+    id
+  }
+  categoryNode {
+    path
+    id
+  }
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    unitQuantity
+  }
+  price {
+    originalPrice
+    salePrice
+    appliedCoupon {
+      price
+    }
+    discountRate
+    pricePerQuantity {
+      __typename
+    }
+  }
+  isFreeDelivery
+}
+
+fragment SearchHeaderPCFragment_1jgNCV on Query {
+  ...HeaderUserActionsPCFragment_1jgNCV
+}
+
+fragment SearchResultCategoryFilterResFragment on SearchGoodsCategoryNode {
+  id
+  children {
+    id
+    name
+    depth
+    parentId
+    totalCount
+    children {
+      id
+      name
+      depth
+      parentId
+      totalCount
+      children {
+        id
+        name
+        depth
+        parentId
+        totalCount
+        children {
+          id
+          name
+          depth
+          parentId
+          totalCount
+        }
+      }
+    }
+  }
+}
+
+fragment SearchResultCategoryFilterSectionPCFragment on GoodsFilterOption {
+  categoryNode {
+    children {
+      __typename
+      id
+    }
+    ...SearchResultCategoryFilterResFragment
+    id
+  }
+}
+
+fragment SearchResultDeliveryFilterSectionPCFragment on GoodsFilterOption {
+  delivery
+  ...SearchResultDeliveryFilterUniFragment
+}
+
+fragment SearchResultDeliveryFilterUniFragment on GoodsFilterOption {
+  delivery
+}
+
+fragment SearchResultFilterChipListMobileFragment on GoodsFilterOption {
+  __typename
+  categoryNode {
+    __typename
+    children {
+      __typename
+      id
+    }
+    id
+  }
+  delivery
+  origin {
+    __typename
+  }
+  weight
+  priceRange {
+    __typename
+    max
+    min
+  }
+  vendor {
+    favorites {
+      __typename
+      totalCount
+    }
+    inCart {
+      __typename
+      totalCount
+    }
+    purchased {
+      __typename
+      totalCount
+    }
+  }
+}
+
+fragment SearchResultFilterPCFragment on GoodsFilterOption {
+  delivery
+  categoryNode {
+    children {
+      __typename
+      id
+    }
+    id
+  }
+  vendor {
+    inCart {
+      totalCount
+    }
+    purchased {
+      totalCount
+    }
+    favorites {
+      totalCount
+    }
+  }
+  origin {
+    __typename
+  }
+  weight
+  ...SearchResultDeliveryFilterSectionPCFragment
+  ...SearchResultSellerFilterSectionPCFragment
+  ...SearchResultPriceFilterSectionPCFragment
+  ...SearchResultCategoryFilterSectionPCFragment
+  ...SearchResultOriginFilterSectionPCFragment
+  ...SearchResultWeightFilterSectionPCFragment
+}
+
+fragment SearchResultFiltersMobileFragment_2Yggon on Query {
+  goodsFilterOption(keyword: $keyword, areaId: $areaId) {
+    __typename
+    delivery
+    ...SearchResultFilterChipListMobileFragment
+  }
+}
+
+fragment SearchResultGoodsListMobileFiltersFragment_2Yggon on Query {
+  ...SearchResultFiltersMobileFragment_2Yggon
+}
+
+fragment SearchResultGoodsListMobileFragment_2hcrYt on Query {
+  mobileGoodsList: goodsSearch(first: 20, input: $searchInput, areaId: $areaId) {
+    totalCount
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        ...ItemCardResFragment_3zJ5zL
+        id
+        nid
+        price {
+          salePrice
+        }
+        catalog {
+          isLowestPriceGoodsIds
+          id
+        }
+        __typename
+      }
+      cursor
+    }
+  }
+}
+
+fragment SearchResultGoodsListPCFragment_1gJacW on Query {
+  pcFilterOption: goodsFilterOption(keyword: $keyword, areaId: $areaId) {
+    ...SearchResultFilterPCFragment
+    ...SearchResultSelectedChipListPCFragment
+  }
+  pcGoodsList: goodsSearch(areaId: $areaId, first: 80, input: $searchInput) {
+    totalCount
+    edges {
+      node {
+        ...ItemCardResFragment_3ZwZC2 @skip(if: $isMobile)
+        id
+        nid
+        __typename
+      }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+
+fragment SearchResultMobileCartFragment_1jgNCV on Query {
+  ...CartCountV2MobileFragment_1jgNCV
+}
+
+fragment SearchResultMobileFragment_1gJacW on Query {
+  ...SearchResultSellerSectionMobileFragment_1iPIfU
+  ...SearchResultGoodsListMobileFragment_2hcrYt
+  ...KeywordRecommendGoodsMobileFragment_2Yggon
+  ...SearchResultGoodsListMobileFiltersFragment_2Yggon
+  keywordRecommendGoodsMobile: keywordRecommendGoods(keyword: $keyword, areaId: $areaId) {
+    __typename
+    id
+  }
+}
+
+fragment SearchResultOriginFilterResFragment on GoodsFilterOption {
+  origin {
+    __typename
+    value
+    count
+  }
+}
+
+fragment SearchResultOriginFilterSectionPCFragment on GoodsFilterOption {
+  ...SearchResultOriginFilterResFragment
+  origin {
+    __typename
+  }
+}
+
+fragment SearchResultPCFragment_1gJacW on Query {
+  ...SearchResultSellerSectionPCFragment_1iPIfU
+  ...SearchResultGoodsListPCFragment_1gJacW
+  ...KeywordRecommendGoodsPCFragment_2Yggon
+}
+
+fragment SearchResultPriceFilterSectionPCFragment on GoodsFilterOption {
+  priceRange {
+    min
+    max
+  }
+}
+
+fragment SearchResultSelectedChipListPCFragment on GoodsFilterOption {
+  categoryNode {
+    id
+    name
+    depth
+    children {
+      id
+      name
+      depth
+      children {
+        id
+        name
+        depth
+        children {
+          id
+          name
+          depth
+          children {
+            id
+            name
+            depth
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment SearchResultSellerFilterSectionPCFragment on GoodsFilterOption {
+  ...SearchResultSellerFilterUniFragment
+  vendor {
+    inCart {
+      totalCount
+    }
+    purchased {
+      totalCount
+    }
+    favorites {
+      totalCount
+    }
+  }
+}
+
+fragment SearchResultSellerFilterUniFragment on GoodsFilterOption {
+  vendor {
+    inCart {
+      totalCount
+      seller {
+        id
+        name
+        searchCount
+      }
+    }
+    purchased {
+      totalCount
+      seller {
+        id
+        name
+        searchCount
+      }
+    }
+    favorites {
+      totalCount
+      seller {
+        id
+        name
+        searchCount
+      }
+    }
+  }
+}
+
+fragment SearchResultSellerSectionMobileFragment_1iPIfU on Query {
+  sellerListMobile: sellerList(first: 1, input: {keyword: $keyword, searchIn: {name: true, introduction: false}}) {
+    totalCount
+    edges {
+      node {
+        name
+        logoImageUrl
+        id
+      }
+    }
+  }
+}
+
+fragment SearchResultSellerSectionPCFragment_1iPIfU on Query {
+  sellerListPC: sellerList(first: 2, input: {keyword: $keyword, searchIn: {name: true, introduction: false}}) {
+    totalCount
+    edges {
+      node {
+        id
+        nid
+        name
+        delivery {
+          ...DeliveryIconResFragment
+          __typename
+          ... on DirectDelivery {
+            __typename
+          }
+          ... on ParcelDelivery {
+            __typename
+          }
+          ... on AggregateDelivery {
+            __typename
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment SearchResultWeightFilterResFragment on GoodsFilterOption {
+  weight
+}
+
+fragment SearchResultWeightFilterSectionPCFragment on GoodsFilterOption {
+  weight
+  ...SearchResultWeightFilterResFragment
+}
+
+fragment SpecialPriceBadgeResFragment on Goods {
+  gfoCode
+}
+
+fragment useGoodsCountV2Fragment on Goods {
+  nid
+  goodsQuantity {
+    minPerOrderQuantity {
+      activated
+      quantity
+    }
+    maxPerOrderQuantity {
+      activated
+      quantity
+    }
+    maxDayQuantity {
+      activated
+      quantity
+    }
+    maxPerPeriodQuantity {
+      activated
+      period {
+        start
+        end
+      }
+      quantity
+      purchased
+    }
+    unitQuantity
+  }
+  stock {
+    assignedQuantity
+    quantity
+  }
+  todayPurchasedCount
+  id
+}
+
+fragment useGoodsNonPurchasableV2Fragment_1LTqib on Goods {
+  id
+  reason_CARD: nonPurchasableReason {
+    __typename
+    ... on GoodsOutOfStockReason {
+      __typename
+      id
+    }
+    ... on GoodsStockNotEnoughReason {
+      __typename
+      id
+    }
+    ... on GoodsBlockedReason {
+      __typename
+      id
+    }
+    ... on SaleInactiveReason {
+      __typename
+      id
+    }
+    ... on GoodsByMinorsReason {
+      id
+    }
+    ... on GoodsDeliveryFeeNotCalculableReason {
+      id
+    }
+    ... on GoodsNonServiceableAreaReason {
+      id
+    }
+    ... on GoodsQuantityAboveDailyMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAboveMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAbovePeriodMaximumReason {
+      id
+    }
+    ... on GoodsQuantityBelowMinimumReason {
+      id
+    }
+    ... on GoodsQuantityConstraintLimitReason {
+      id
+    }
+    ... on GoodsQuantityNotDivisibleUnitQuantityReason {
+      id
+    }
+  }
+}
+
+fragment useGoodsNonPurchasableV2Fragment_BeRX7 on Goods {
+  id
+  reason_CARD: nonPurchasableReason {
+    __typename
+    ... on GoodsOutOfStockReason {
+      __typename
+      id
+    }
+    ... on GoodsStockNotEnoughReason {
+      __typename
+      id
+    }
+    ... on GoodsBlockedReason {
+      __typename
+      id
+    }
+    ... on SaleInactiveReason {
+      __typename
+      id
+    }
+    ... on GoodsByMinorsReason {
+      id
+    }
+    ... on GoodsDeliveryFeeNotCalculableReason {
+      id
+    }
+    ... on GoodsNonServiceableAreaReason {
+      id
+    }
+    ... on GoodsQuantityAboveDailyMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAboveMaximumReason {
+      id
+    }
+    ... on GoodsQuantityAbovePeriodMaximumReason {
+      id
+    }
+    ... on GoodsQuantityBelowMinimumReason {
+      id
+    }
+    ... on GoodsQuantityConstraintLimitReason {
+      id
+    }
+    ... on GoodsQuantityNotDivisibleUnitQuantityReason {
+      id
+    }
+  }
+}
+
+fragment useGoodsPurchasableFragment on Goods {
+  nonPurchasableReason {
+    __typename
+    ... on GoodsOutOfStockReason {
+      __typename
+      id
+    }
+    ... on GoodsByMinorsReason {
+      __typename
+      id
+    }
+    ... on GoodsStockNotEnoughReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityBelowMinimumReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityAboveMaximumReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityAboveDailyMaximumReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityAbovePeriodMaximumReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityNotDivisibleUnitQuantityReason {
+      __typename
+      id
+    }
+    ... on GoodsNonServiceableAreaReason {
+      __typename
+      id
+    }
+    ... on GoodsBlockedReason {
+      __typename
+      id
+    }
+    ... on GoodsDeliveryFeeNotCalculableReason {
+      __typename
+      id
+    }
+    ... on GoodsQuantityConstraintLimitReason {
+      __typename
+      id
+    }
+    ... on SaleInactiveReason {
+      __typename
+      id
+    }
+  }
+}
+
+fragment useHasPurchaseHistoryFragment on User {
+  __isUser: __typename
+  __typename
+  ... on RegisteredUser {
+    hasPurchaseHistory
+  }
+}
+
+fragment useItemCardBadgeItemsFragment_3ZwZC2 on Goods {
+  tag(type: CATEGORY) {
+    __typename
+    ... on CategoryGoodsTag {
+      text
+      emphasis
+    }
+    ... on RepurchaseGoodsTag {
+      text
+      emphasis
+    }
+  }
+}
+
+fragment useItemCardBadgeItemsFragment_3zJ5zL on Goods {
+  tag(type: ALL) {
+    __typename
+    ... on CategoryGoodsTag {
+      text
+      emphasis
+    }
+    ... on RepurchaseGoodsTag {
+      text
+      emphasis
+    }
+  }
+}
